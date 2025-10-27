@@ -2,6 +2,7 @@
 
 📝 Instrucciones para colaborar en el proyecto
 1️⃣ Clonar el repositorio (solo la primera vez)
+
 git clone https://github.com/usuario/proyecto_AED_2.git
 cd proyecto_AED_2
 code .
@@ -10,6 +11,7 @@ code .
 Sustituye usuario por el nombre real del propietario del repositorio.
 
 2️⃣ Configurar tu usuario (solo la primera vez)
+
 git config --global user.name "TuNombre"
 git config --global user.email "tuemail@ejemplo.com"
 
@@ -27,6 +29,7 @@ git add .
 git commit -m "Descripción de lo que cambiaste"
 
 5️⃣ Subir tus cambios al repositorio (push)
+
 git push
 
 
