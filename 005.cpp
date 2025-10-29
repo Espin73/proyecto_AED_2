@@ -50,9 +50,9 @@ private:
 public:
     Fecha();
     bool leer();
-    void escribir();
-    bool es_menor(Fecha &otra);
-    bool es_igual(Fecha &otra);
+    void escribir() const;
+    bool es_menor(Fecha &otra) const;
+    bool es_igual(Fecha &otra) const;
 };
 Fecha::Fecha(){
     dia=0;
@@ -79,7 +79,7 @@ bool Fecha::leer(){
     return true;
 }
 
-void Fecha::escribir(){
+void Fecha::escribir() const{
     cout << dia << "/" << mes << "/" << anio << " ";
     
     if(hora < 10) cout << '0' << hora;
@@ -94,12 +94,12 @@ void Fecha::escribir(){
     else cout << segundo;
 }
 
-bool Fecha::es_igual(Fecha &otra){
+bool Fecha::es_igual(Fecha &otra) const{
 
     return dia==otra.dia && mes==otra.mes && anio==otra.anio && hora==otra.hora && minuto==otra.minuto && segundo==otra.segundo;
 }
 
-bool Fecha::es_menor(Fecha &otra){
+bool Fecha::es_menor(Fecha &otra) const{
     
     if(anio < otra.anio){
         return true;
@@ -181,14 +181,15 @@ public:
         return usuario < otro.usuario;
     }
 
-    void leer_mcuac() {
+void leer_mcuac(){
         cin >> usuario;
         cin.ignore();
         fecha.leer();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
         getline(cin, mensaje);
     }
 
-    void leer_pcuac() {
+    void leer_pcuac(){
         cin >> usuario;
         cin.ignore();
         fecha.leer();
@@ -198,7 +199,7 @@ public:
         mensaje = mensajes_pcuac(n);
     }
 
-    void escribir() const {
+    void escribir() const{
         cout << usuario << " ";
         fecha.escribir();
         cout << "\n   " << mensaje;
@@ -250,14 +251,15 @@ int main(){
             }
         }
 
-        else if(comando == "date"){
-             Fecha f1, f2;
-            f1.leer();
-            f2.leer();
+        else if (comando == "date") {
+            Fecha fecha_inicial;
+            Fecha fecha_final;
+            fecha_inicial.leer();
+            fecha_final.leer();
             cout << "date ";
-            f1.escribir();
+            fecha_inicial.escribir();
             cout << " ";
-            f2.escribir();
+            fecha_final.escribir();
             cout << "\n";
             if(hayActual){
                 cout << "1. ";
