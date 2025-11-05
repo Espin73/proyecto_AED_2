@@ -166,23 +166,20 @@ public:
 
     
     bool operator<(const Cuac &otro) const {
-       
-        if (fecha_hora != otro.fecha_hora)
-            return fecha_hora > otro.fecha_hora;
-
-        
+    if (fecha.es_igual(const_cast<Fecha&>(otro.get_fecha())))
+    {
         if (mensaje != otro.mensaje)
             return mensaje < otro.mensaje;
-
-       
         return usuario < otro.usuario;
     }
 
-void leer_mcuac(){
+    return otro.get_fecha().es_menor(const_cast<Fecha&>(fecha));
+}
+
+    void leer_mcuac() {
         cin >> usuario;
-        cin.ignore();
         fecha.leer();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+        cin.ignore();
         getline(cin, mensaje);
     }
 
