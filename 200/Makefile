@@ -1,4 +1,4 @@
-# Compilación 200
+#Compilación 200
 
 a.out: main.o Fecha.o Cuac.o DiccionarioCuacs.o
 	g++ main.o Fecha.o Cuac.o DiccionarioCuacs.o -o a.out

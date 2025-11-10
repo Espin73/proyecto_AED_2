@@ -28,18 +28,9 @@ int main() {
             dic.insertar(c);
             cout << dic.total() << " cuac\n";
         }
-        else if (comando == "last") {
-            int n; cin >> n;
-            dic.mostrar_last(n);
-        }
         else if (comando == "follow") {
             string nombre; cin >> nombre;
             dic.mostrar_follow(nombre);
-        }
-        else if (comando == "date") {
-            Fecha f1, f2;
-            f1.leer(); f2.leer();
-            dic.mostrar_date(f1, f2);
         }
     }
 

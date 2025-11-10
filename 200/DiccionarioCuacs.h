@@ -8,13 +8,12 @@ using namespace std;
 
 class DiccionarioCuacs {
 private:
-    vector<Cuac> lista;
+    int n_total;
     unordered_map<string, vector<Cuac>> porUsuario;
 
 public:
+    DiccionarioCuacs():n_total(0){}
     void insertar(const Cuac &c);
-    void mostrar_last(int n) const;
     void mostrar_follow(const string &nombre) const;
-    void mostrar_date(Fecha f1, Fecha f2) const;
-    int total() const { return (int)lista.size(); }
+    int total() const { return n_total; }
 };
