@@ -1,23 +1,18 @@
 #pragma once
 #include "Cuac.h"
 #include <vector>
-#include <memory>
+#include <set>
 using namespace std;
 
-struct NodoFecha {
-    Fecha fecha;
-    vector<const Cuac*> cuacs;
-    unique_ptr<NodoFecha> izq, der;
-
-    NodoFecha(const Fecha& f) : fecha(f) {}
+struct ComparadorCuacs {
+    bool operator()(const Cuac* a, const Cuac* b) const {
+        return *a < *b; 
+    }
 };
 
 class ArbolFechas {
 private:
-    unique_ptr<NodoFecha> raiz;
-
-    void insertar_rec(unique_ptr<NodoFecha>& nodo, const Cuac* c);
-    void recorrido_desc(const NodoFecha* nodo, vector<const Cuac*>& lista) const;
+    set<const Cuac*, ComparadorCuacs> arbol;
 
 public:
     ArbolFechas() {}
