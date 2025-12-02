@@ -27,6 +27,8 @@ private:
 
     void inordenRec(Nodo* nodo, vector<const Cuac*>& lista, int& contador, int n) const;
 
+    void rangoRec(Nodo* nodo, const Fecha& ini, const Fecha& fin, vector<const Cuac*>& lista) const;
+
     void liberarArbol(Nodo* nodo);
 
 public:
@@ -35,4 +37,5 @@ public:
     
     void insertar(const Cuac* c);
     vector<const Cuac*> ultimos(int n) const;
+    vector<const Cuac*> rango(const Fecha& ini, const Fecha& fin) const;
 };

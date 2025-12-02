@@ -38,6 +38,12 @@ int main() {
             cin >> n;
             dic.mostrar_last(n);
         }
+        else if (comando == "date") {
+            Fecha ini, fin;
+            ini.leer();
+            fin.leer();
+            dic.mostrar_date(ini, fin);
+        }
     }
 
     return 0;

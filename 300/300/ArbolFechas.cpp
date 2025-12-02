@@ -104,6 +104,32 @@ void ArbolFechas::inordenRec(Nodo* nodo, vector<const Cuac*>& lista, int& contad
     inordenRec(nodo->der, lista, contador, n);
 }
 
+void ArbolFechas::rangoRec(Nodo* nodo, const Fecha& ini, const Fecha& fin, vector<const Cuac*>& lista) const {
+    if (nodo == nullptr) return;
+
+    const Fecha& fNode = nodo->dato->get_fecha();
+
+    bool nodo_es_mayor_que_fin = fin.es_menor(fNode);
+    
+    if (!nodo_es_mayor_que_fin) {
+        rangoRec(nodo->izq, ini, fin, lista);
+    }
+
+
+    bool mayor_igual_ini = !fNode.es_menor(ini);
+    bool menor_igual_fin = !fin.es_menor(fNode);
+    
+    if (mayor_igual_ini && menor_igual_fin) {
+        lista.push_back(nodo->dato);
+    }
+    
+    bool nodo_es_menor_que_ini = fNode.es_menor(ini);
+    
+    if (!nodo_es_menor_que_ini) {
+        rangoRec(nodo->der, ini, fin, lista);
+    }
+}
+
 vector<const Cuac*> ArbolFechas::ultimos(int n) const {
     vector<const Cuac*> lista;
     int contador = 0;
@@ -112,5 +138,11 @@ vector<const Cuac*> ArbolFechas::ultimos(int n) const {
         inordenRec(raiz, lista, contador, n);
     }
     
+    return lista;
+}
+
+vector<const Cuac*> ArbolFechas::rango(const Fecha& ini, const Fecha& fin) const {
+    vector<const Cuac*> lista;
+    rangoRec(raiz, ini, fin, lista);
     return lista;
 }

@@ -41,3 +41,20 @@ void DiccionarioCuacs::mostrar_last(int n) const {
     }
     cout << "Total: " << ultimos.size() << " cuac\n";
 }
+
+void DiccionarioCuacs::mostrar_date(const Fecha& ini, const Fecha& fin) const {
+    cout << "date ";
+    ini.escribir();
+    cout << " ";
+    fin.escribir();
+    cout << "\n";
+
+    vector<const Cuac*> encontrados = porFecha.rango(ini, fin);
+
+    for (size_t i = 0; i < encontrados.size(); ++i) {
+        cout << i + 1 << ". ";
+        encontrados[i]->escribir();
+        cout << "\n";
+    }
+    cout << "Total: " << encontrados.size() << " cuac\n";
+}

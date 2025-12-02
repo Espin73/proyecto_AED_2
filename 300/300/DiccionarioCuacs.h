@@ -19,4 +19,5 @@ public:
     void mostrar_follow(const string &nombre) const;
     void mostrar_last(int n) const;
     int total() const { return n_total; }
+    void mostrar_date(const Fecha& ini, const Fecha& fin) const;
 };
