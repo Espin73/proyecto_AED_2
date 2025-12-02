@@ -44,14 +44,14 @@ string mensajes_pcuac(int n) {
 
 
     bool Cuac::operator<(const Cuac &otro) const {
-    if (fecha.es_igual(const_cast<Fecha&>(otro.get_fecha())))
+    if (fecha.es_igual(otro.get_fecha()))
     {
         if (mensaje != otro.mensaje)
             return mensaje < otro.mensaje;
         return usuario < otro.usuario;
     }
 
-    return otro.get_fecha().es_menor(const_cast<Fecha&>(fecha));
+    return otro.get_fecha().es_menor(fecha);
 }
 
     void Cuac::leer_mcuac() {

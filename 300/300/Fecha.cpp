@@ -46,12 +46,12 @@ void Fecha::escribir() const{
     else cout << segundo;
 }
 
-bool Fecha::es_igual(Fecha &otra) const{
+bool Fecha::es_igual(const Fecha &otra) const{
 
     return dia==otra.dia && mes==otra.mes && anio==otra.anio && hora==otra.hora && minuto==otra.minuto && segundo==otra.segundo;
 }
 
-bool Fecha::es_menor(Fecha &otra) const{
+bool Fecha::es_menor(const Fecha &otra) const{
     
     if(anio < otra.anio){
         return true;

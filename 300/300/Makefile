@@ -1,5 +1,3 @@
-#Compilación 300
-
 a.out: main.o Fecha.o Cuac.o DiccionarioCuacs.o ArbolFechas.o
 	g++ main.o Fecha.o Cuac.o DiccionarioCuacs.o ArbolFechas.o -o a.out
 

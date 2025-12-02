@@ -15,6 +15,6 @@ public:
     Fecha();
     bool leer();
     void escribir() const;
-    bool es_menor(Fecha &otra) const;
-    bool es_igual(Fecha &otra) const;
+    bool es_menor(const Fecha &otra) const;
+    bool es_igual(const Fecha &otra) const;
 };

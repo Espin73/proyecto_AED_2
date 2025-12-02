@@ -1,21 +1,38 @@
 #pragma once
 #include "Cuac.h"
 #include <vector>
-#include <set>
+#include <algorithm>
 using namespace std;
 
-struct ComparadorCuacs {
-    bool operator()(const Cuac* a, const Cuac* b) const {
-        return *a < *b; 
-    }
+struct Nodo {
+    const Cuac* dato;
+    Nodo* izq;
+    Nodo* der;
+    int altura;
+
+    Nodo(const Cuac* c) : dato(c), izq(nullptr), der(nullptr), altura(1) {}
 };
 
 class ArbolFechas {
 private:
-    set<const Cuac*, ComparadorCuacs> arbol;
+    Nodo* raiz;
+
+    int getAltura(Nodo* n) const;
+    int getEquilibrio(Nodo* n) const;
+    
+    Nodo* rotarDerecha(Nodo* y);
+    Nodo* rotarIzquierda(Nodo* x);
+    
+    Nodo* insertarRec(Nodo* nodo, const Cuac* c);
+
+    void inordenRec(Nodo* nodo, vector<const Cuac*>& lista, int& contador, int n) const;
+
+    void liberarArbol(Nodo* nodo);
 
 public:
-    ArbolFechas() {}
+    ArbolFechas();
+    ~ArbolFechas();
+    
     void insertar(const Cuac* c);
     vector<const Cuac*> ultimos(int n) const;
 };
