@@ -2,22 +2,35 @@
 #include <string>
 #include <vector>
 #include <list>
-#include <unordered_map>
 #include "Cuac.h"
 #include "Fecha.h"
 #include "ArbolFechas.h"
 using namespace std;
 
+struct EntradaUsuario {
+    string nombre;
+    list<Cuac> mensajes;
+};
+
 class DiccionarioCuacs {
 private:
     int n_total;
-    unordered_map<string, list<Cuac>> porUsuario;
+    
+    static const int TAM_TABLA = 10007; 
+    
+    vector<list<EntradaUsuario>> tabla; 
+
+    unsigned long hashStr(const string &str) const;
+
     ArbolFechas porFecha;
+
 public:
-    DiccionarioCuacs():n_total(0){}
+    DiccionarioCuacs();
+    
     void insertar(const Cuac &c);
     void mostrar_follow(const string &nombre) const;
     void mostrar_last(int n) const;
-    void mostrar_date(const Fecha& inicio, const Fecha& fin) const;
+    void mostrar_date(const Fecha& ini, const Fecha& fin) const;
+
     int total() const { return n_total; }
 };

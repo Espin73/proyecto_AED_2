@@ -4,23 +4,72 @@
 #include <vector>
 using namespace std;
 
+DiccionarioCuacs::DiccionarioCuacs() : n_total(0) {
+    tabla.resize(TAM_TABLA);
+}
+
+unsigned long DiccionarioCuacs::hashStr(const string &str) const {
+    unsigned long hash = 5381;
+    for (char c : str) {
+        hash = ((hash << 5) + hash) + c;
+    }
+    return hash % TAM_TABLA;
+}
+
 void DiccionarioCuacs::insertar(const Cuac &c) {
-    porUsuario[c.get_usuario()].push_back(c);
+    string usuario = c.get_usuario();
+    int indice = hashStr(usuario);
+
+    bool encontrado = false;
+    list<EntradaUsuario>& bucket = tabla[indice];
+    
+    for (auto &entrada : bucket) {
+        if (entrada.nombre == usuario) {
+            entrada.mensajes.push_back(c);
+            encontrado = true;
+            
+            const Cuac* ref = &entrada.mensajes.back();
+            porFecha.insertar(ref);
+            break;
+        }
+    }
+
+    if (!encontrado) {
+        EntradaUsuario nueva;
+        nueva.nombre = usuario;
+        nueva.mensajes.push_back(c);
+        bucket.push_back(nueva);
+        
+        const Cuac* ref = &bucket.back().mensajes.back();
+        porFecha.insertar(ref);
+    }
+
     n_total++;
-    const Cuac* ref = &porUsuario[c.get_usuario()].back();
-    porFecha.insertar(ref);
 }
 
 void DiccionarioCuacs::mostrar_follow(const string &nombre) const {
     cout << "follow " << nombre << "\n";
-    int cont = 0;
-    auto it = porUsuario.find(nombre);
     
-    if (it != porUsuario.end()) {
-        list<Cuac> lista = it->second;
-        lista.sort(); 
+    int indice = hashStr(nombre);
+    const list<EntradaUsuario>& bucket = tabla[indice];
+    
+    const list<Cuac>* lista_ptr = nullptr;
+    
+    for (const auto &entrada : bucket) {
+        if (entrada.nombre == nombre) {
+            lista_ptr = &entrada.mensajes;
+            break;
+        }
+    }
+
+    int cont = 0;
+    if (lista_ptr != nullptr) {
+
+        list<Cuac> copiaLista = *lista_ptr;
+        copiaLista.sort();
+
         int i = 1;
-        for (const auto& cuac : lista) {
+        for (const auto& cuac : copiaLista) {
             cout << i << ". ";
             cuac.escribir();
             cout << "\n";
@@ -42,19 +91,19 @@ void DiccionarioCuacs::mostrar_last(int n) const {
     cout << "Total: " << ultimos.size() << " cuac\n";
 }
 
-void DiccionarioCuacs::mostrar_date(const Fecha& inicio, const Fecha& fin) const {
+void DiccionarioCuacs::mostrar_date(const Fecha& ini, const Fecha& fin) const {
     cout << "date ";
-    inicio.escribir();
+    ini.escribir();
     cout << " ";
     fin.escribir();
-    cout << endl;
+    cout << "\n";
 
-    vector<const Cuac*> resultados = porFecha.buscar_rango(inicio, fin);
+    vector<const Cuac*> encontrados = porFecha.buscar_rango(ini, fin);
 
-    for (size_t i = 0; i < resultados.size(); ++i) {
+    for (size_t i = 0; i < encontrados.size(); ++i) {
         cout << i + 1 << ". ";
-        resultados[i]->escribir();
+        encontrados[i]->escribir();
         cout << "\n";
     }
-    cout << "Total: " << resultados.size() << " cuac\n";
+    cout << "Total: " << encontrados.size() << " cuac\n";
 }
