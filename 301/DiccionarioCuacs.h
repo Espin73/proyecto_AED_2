@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include <vector>
-#include <list>
 #include "Cuac.h"
 #include "Fecha.h"
 #include "ArbolFechas.h"
@@ -9,7 +8,7 @@ using namespace std;
 
 struct EntradaUsuario {
     string nombre;
-    list<Cuac> mensajes;
+    vector<Cuac*> mensajes; 
 };
 
 class DiccionarioCuacs {
@@ -18,7 +17,7 @@ private:
     
     static const int TAM_TABLA = 10007; 
     
-    vector<list<EntradaUsuario>> tabla; 
+    vector<vector<EntradaUsuario>> tabla; 
 
     unsigned long hashStr(const string &str) const;
 
@@ -26,6 +25,7 @@ private:
 
 public:
     DiccionarioCuacs();
+    ~DiccionarioCuacs();
     
     void insertar(const Cuac &c);
     void mostrar_follow(const string &nombre) const;

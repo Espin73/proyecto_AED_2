@@ -8,6 +8,16 @@ DiccionarioCuacs::DiccionarioCuacs() : n_total(0) {
     tabla.resize(TAM_TABLA);
 }
 
+DiccionarioCuacs::~DiccionarioCuacs() {
+    for (auto &bucket : tabla) {
+        for (auto &entrada : bucket) {
+            for (auto *c : entrada.mensajes) {
+                delete c;
+            }
+        }
+    }
+}
+
 unsigned long DiccionarioCuacs::hashStr(const string &str) const {
     unsigned long hash = 5381;
     for (char c : str) {
@@ -21,15 +31,15 @@ void DiccionarioCuacs::insertar(const Cuac &c) {
     int indice = hashStr(usuario);
 
     bool encontrado = false;
-    list<EntradaUsuario>& bucket = tabla[indice];
+    vector<EntradaUsuario>& bucket = tabla[indice];
     
     for (auto &entrada : bucket) {
         if (entrada.nombre == usuario) {
-            entrada.mensajes.push_back(c);
+            Cuac* nuevo_cuac = new Cuac(c);
+            entrada.mensajes.push_back(nuevo_cuac);
             encontrado = true;
             
-            const Cuac* ref = &entrada.mensajes.back();
-            porFecha.insertar(ref);
+            porFecha.insertar(nuevo_cuac);
             break;
         }
     }
@@ -37,11 +47,13 @@ void DiccionarioCuacs::insertar(const Cuac &c) {
     if (!encontrado) {
         EntradaUsuario nueva;
         nueva.nombre = usuario;
-        nueva.mensajes.push_back(c);
+        
+        Cuac* nuevo_cuac = new Cuac(c);
+        nueva.mensajes.push_back(nuevo_cuac);
+        
         bucket.push_back(nueva);
         
-        const Cuac* ref = &bucket.back().mensajes.back();
-        porFecha.insertar(ref);
+        porFecha.insertar(nuevo_cuac);
     }
 
     n_total++;
@@ -51,9 +63,9 @@ void DiccionarioCuacs::mostrar_follow(const string &nombre) const {
     cout << "follow " << nombre << "\n";
     
     int indice = hashStr(nombre);
-    const list<EntradaUsuario>& bucket = tabla[indice];
+    const vector<EntradaUsuario>& bucket = tabla[indice];
     
-    const list<Cuac>* lista_ptr = nullptr;
+    const vector<Cuac*>* lista_ptr = nullptr;
     
     for (const auto &entrada : bucket) {
         if (entrada.nombre == nombre) {
@@ -64,14 +76,16 @@ void DiccionarioCuacs::mostrar_follow(const string &nombre) const {
 
     int cont = 0;
     if (lista_ptr != nullptr) {
-
-        list<Cuac> copiaLista = *lista_ptr;
-        copiaLista.sort();
+        vector<Cuac*> copiaLista = *lista_ptr;
+        
+        sort(copiaLista.begin(), copiaLista.end(), [](const Cuac* a, const Cuac* b) {
+            return *a < *b;
+        });
 
         int i = 1;
-        for (const auto& cuac : copiaLista) {
+        for (const auto* cuac : copiaLista) {
             cout << i << ". ";
-            cuac.escribir();
+            cuac->escribir();
             cout << "\n";
             cont++;
             i++;
